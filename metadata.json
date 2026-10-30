@@ -1,0 +1,6 @@
+{
+  "name": "CIRCULA",
+  "description": "Plataforma de circulación de libros de todo tipo y materiales educativos con Puntos CIRCULA y pases digitales de retiro",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

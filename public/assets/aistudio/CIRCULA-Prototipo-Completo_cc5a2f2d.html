@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIRCULA - Prototipo Completo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #103528 0%, #174633 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: #EFB93F;
+            color: #103528;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        nav {
+            background: #174633;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #EFB93F;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            page-break-inside: avoid;
+        }
+        
+        h2 {
+            color: #103528;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #EFB93F;
+        }
+        
+        h3 {
+            color: #174633;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #2a7455;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .code-block-header {
+            background: #2d2d2d;
+            color: #EFB93F;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+        }
+        
+        .code-block + .code-block {
+            margin-top: 0;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .info-box {
+            background: #e8f4f0;
+            border-left: 4px solid #103528;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #fff4e6;
+            border-left: 4px solid #EFB93F;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #e8f8f0;
+            border-left: 4px solid #2a7455;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+        
+        th {
+            background: #103528;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .file-tree {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        
+        .file-tree .folder {
+            color: #103528;
+            font-weight: 600;
+        }
+        
+        .file-tree .file {
+            color: #2a7455;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #103528;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #EFB93F;
+        }
+        
+        footer {
+            background: #103528;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            nav {
+                position: static;
+                page-break-after: always;
+            }
+            
+            .code-block {
+                page-break-inside: avoid;
+            }
+            
+            section {
+                page-break-inside: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            main {
+                padding: 1rem;
+            }
+            
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 CIRCULA</h1>
+            <p>Plataforma de circulación de materiales educativos</p>
+            <div class="version-badge">Prototipo MVP v1.0</div>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#resumen">Resumen</a></li>
+                <li><a href="#arquitectura">Arquitectura</a></li>
+                <li><a href="#estructura">Estructura</a></li>
+                <li><a href="#codigo">Código Fuente</a></li>
+                <li><a href="#seguridad">Seguridad</a></li>
+                <li><a href="#despliegue">Despliegue</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <div class="toc">
+                <h3>📋 Tabla de Contenidos</h3>
+                <ul>
+                    <li><a href="#resumen">1. Resumen Ejecutivo</a></li>
+                    <li><a href="#caracteristicas">2. Características Principales</a></li>
+                    <li><a href="#arquitectura">3. Arquitectura Técnica</a></li>
+                    <li><a href="#estructura">4. Estructura del Proyecto</a></li>
+                    <li><a href="#codigo">5. Código Fuente Completo</a></li>
+                    <li><a href="#seguridad">6. Seguridad y Privacidad</a></li>
+                    <li><a href="#despliegue">7. Guía de Despliegue</a></li>
+                    <li><a href="#uso">8. Uso del Prototipo</a></li>
+                </ul>
+            </div>
+            
+            <section id="resumen">
+                <h2>1. Resumen Ejecutivo</h2>
+                <p><strong>CIRCULA</strong> es una plataforma web que facilita la circulación de libros y materiales educativos entre estudiantes universitarios y lectores en general. El sistema permite a los usuarios donar materiales que ya no utilizan y solicitar materiales disponibles en el catálogo.</p>
+                
+                <div class="info-box">
+                    <strong>🎯 Objetivo:</strong> Crear un ecosistema de intercambio gratuito de conocimiento, reduciendo la acumulación de materiales y facilitando el acceso a recursos educativos.
+                </div>
+                
+                <h3>Principios Fundamentales</h3>
+                <ul>
+                    <li><strong>Utilidad antes que comunidad:</strong> La plataforma existe para resolver necesidades concretas</li>
+                    <li><strong>Mínima fricción:</strong> Consulta del catálogo sin registro obligatorio</li>
+                    <li><strong>Curaduría central:</strong> La organización controla qué se publica</li>
+                    <li><strong>Gratuidad:</strong> No hay compraventa en el MVP</li>
+                    <li><strong>Privacidad por diseño:</strong> Nunca se exponen datos de contacto públicamente</li>
+                    <li><strong>Mobile-first:</strong> Optimizado para dispositivos móviles</li>
+                </ul>
+            </section>
+            
+            <section id="caracteristicas">
+                <h2>2. Características Principales</h2>
+                
+                <h3>🔍 Para Visitantes</h3>
+                <ul>
+                    <li>Búsqueda de materiales por texto libre</li>
+                    <li>Filtros por categoría, tipo, zona y estado</li>
+                    <li>Visualización de fichas detalladas</li>
+                    <li>Solicitud de materiales disponibles</li>
+                    <li>Formulario de donación simple</li>
+                </ul>
+                
+                <h3>👨‍💼 Para Operadores (Backoffice)</h3>
+                <ul>
+                    <li>Gestión de donaciones entrantes</li>
+                    <li>Administración del catálogo de materiales</li>
+                    <li>Coordinación de solicitudes</li>
+                    <li>Gestión de categorías</li>
+                    <li>Registro de auditoría completo</li>
+                    <li>Panel de métricas en tiempo real</li>
+                </ul>
+                
+                <h3>🔒 Seguridad y Privacidad</h3>
+                <ul>
+                    <li>DTOs públicos sanitizados (sin datos de contacto)</li>
+                    <li>Validación server-side en todas las mutaciones</li>
+                    <li>Rate limiting por endpoint</li>
+                    <li>Autenticación con roles (operador/admin)</li>
+                    <li>Autorización granular por rol</li>
+                    <li>Auditoría completa de acciones críticas</li>
+                </ul>
+            </section>
+            
+            <section id="arquitectura">
+                <h2>3. Arquitectura Técnica</h2>
+                
+                <h3>Stack Tecnológico</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capa</th>
+                            <th>Tecnología</th>
+                            <th>Justificación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Frontend</td>
+                            <td>React 18 + TypeScript</td>
+                            <td>Componentes reutilizables, tipado estático</td>
+                        </tr>
+                        <tr>
+                            <td>Build Tool</td>
+                            <td>Vite</td>
+                            <td>Desarrollo rápido, HMR instantáneo</td>
+                        </tr>
+                        <tr>
+                            <td>Estilos</td>
+                            <td>Tailwind CSS 4</td>
+                            <td>Utility-first, responsive, personalizable</td>
+                        </tr>
+                        <tr>
+                            <td>Estado</td>
+                            <td>React Context + useReducer</td>
+                            <td>Estado global sin dependencias externas</td>
+                        </tr>
+                        <tr>
+                            <td>Persistencia</td>
+                            <td>localStorage</td>
+                            <td>Prototipo funcional sin backend</td>
+                        </tr>
+                        <tr>
+                            <td>Rutas</td>
+                            <td>Hash Router</td>
+                            <td>Navegación SPA sin configuración de servidor</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Flujo de Datos</h3>
+                <div class="info-box">
+                    <p><strong>Arquitectura de Capas:</strong></p>
+                    <ol>
+                        <li><strong>Vistas (Views):</strong> Componentes de página que consumen la API</li>
+                        <li><strong>API Layer:</strong> Simula endpoints REST con validación y rate limiting</li>
+                        <li><strong>Store:</strong> Estado global con reducer y acciones tipadas</li>
+                        <li><strong>Persistencia:</strong> localStorage con serialización automática</li>
+                    </ol>
+                </div>
+                
+                <h3>Modelo de Datos</h3>
+                <h4>Entidades Principales</h4>
+                <ul>
+                    <li><strong>Material:</strong> Libro, apuntes, manual, etc. con estado, categoría, zona</li>
+                    <li><strong>Donation:</strong> Propuesta de donación con estado y notas</li>
+                    <li><strong>Request:</strong> Solicitud de material con estado y coordinación</li>
+                    <li><strong>Category:</strong> Categorización de materiales</li>
+                    <li><strong>AdminUser:</strong> Usuarios del backoffice con roles</li>
+                    <li><strong>AuditEntry:</strong> Registro de auditoría</li>
+                </ul>
+                
+                <h4>Máquinas de Estado</h4>
+                <p><strong>Material:</strong> borrador → disponible → reservado → entregado (o inactivo)</p>
+                <p><strong>Donation:</strong> pendiente → contactada → aceptada → en_recepcion → recibida (o rechazada/cancelada)</p>
+                <p><strong>Request:</strong> recibida → coordinacion → reservada → entregada (o cancelada/vencida)</p>
+            </section>
+            
+            <section id="estructura">
+                <h2>4. Estructura del Proyecto</h2>
+                
+                <div class="file-tree">
+<span class="folder">circula/</span>
+├── <span class="file">index.html</span>                 # Punto de entrada HTML
+├── <span class="file">package.json</span>               # Dependencias y scripts
+├── <span class="file">tsconfig.json</span>              # Configuración TypeScript
+├── <span class="file">vite.config.js</span>             # Configuración Vite
+│
+└── <span class="folder">src/</span>
+    ├── <span class="file">main.tsx</span>                 # Bootstrap de React
+    ├── <span class="file">App.tsx</span>                  # Router y layout principal
+    ├── <span class="file">index.css</span>                # Estilos globales y tema
+    │
+    ├── <span class="folder">components/</span>              # Componentes reutilizables
+    │   ├── <span class="file">ui.tsx</span>               # UI primitives (Modal, Field, icons)
+    │   └── <span class="file">catalog.tsx</span>          # Cover, MaterialCard, Ticker
+    │
+    ├── <span class="folder">lib/</span>                     # Lógica de negocio
+    │   ├── <span class="file">data.ts</span>              # Tipos, constantes, seed data
+    │   ├── <span class="file">store.tsx</span>            # Estado global (Context + Reducer)
+    │   └── <span class="file">api.ts</span>               # Capa de servicio (API simulada)
+    │
+    └── <span class="folder">views/</span>                   # Páginas de la aplicación
+        ├── <span class="file">Home.tsx</span>             # Página de inicio + catálogo
+        ├── <span class="file">Material.tsx</span>         # Ficha de material + solicitud
+        ├── <span class="file">Donate.tsx</span>           # Formulario de donación
+        └── <span class="file">Admin.tsx</span>            # Backoffice completo
+                </div>
+            </section>
+            
+            <section id="codigo">
+                <h2>5. Código Fuente Completo</h2>
+                
+                <div class="info-box">
+                    <strong>📝 Nota:</strong> El código fuente completo está organizado en los archivos del proyecto. A continuación se muestran los archivos clave con explicaciones.
+                </div>
+                
+                <h3>📄 index.html</h3>
+                <div class="code-block-header">index.html</div>
+                <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" /&gt;
+    &lt;meta name="description" content="CIRCULA — Catálogo de materiales educativos gratuitos" /&gt;
+    &lt;meta name="referrer" content="strict-origin-when-cross-origin" /&gt;
+    &lt;title&gt;CIRCULA — Catálogo de materiales educativos gratuitos&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="root"&gt;&lt;/div&gt;
+    &lt;script type="module" src="/src/main.tsx"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+                
+                <h3>📄 src/main.tsx</h3>
+                <div class="code-block-header">src/main.tsx</div>
+                <pre class="code-block">import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  &lt;React.StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/React.StrictMode&gt;,
+)</pre>
+                
+                <h3>📄 src/App.tsx (Router Principal)</h3>
+                <div class="code-block-header">src/App.tsx</div>
+                <pre class="code-block">import { useCallback, useEffect, useRef, useState } from "react";
+import { StoreProvider, useStore } from "./lib/store";
+import Home from "./views/Home";
+import MaterialView from "./views/Material";
+import DonateView from "./views/Donate";
+import AdminView, { ADMIN_TABS, Tab } from "./views/Admin";
+import { LogoMark } from "./components/ui";
+
+type Route =
+  | { view: "home" }
+  | { view: "material"; id: string }
+  | { view: "donar" }
+  | { view: "admin"; tab: Tab };
+
+function parseHash(hash: string): Route {
+  const h = hash.replace(/^#\/?/, "");
+  const [a, b] = h.split("/");
+  if (a === "material" && b) return { view: "material", id: b };
+  if (a === "donar") return { view: "donar" };
+  if (a === "admin") return { view: "admin", tab: (ADMIN_TABS as string[]).includes(b) ? (b as Tab) : "panel" };
+  return { view: "home" };
+}
+
+function Shell() {
+  const { state } = useStore();
+  const [route, setRoute] = useState&lt;Route&gt;(() =&gt; parseHash(window.location.hash));
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pendingSection = useRef&lt;string | null&gt;(null);
+
+  useEffect(() =&gt; {
+    const onHash = () =&gt; {
+      setRoute(parseHash(window.location.hash));
+      setMenuOpen(false);
+    };
+    window.addEventListener("hashchange", onHash);
+    return () =&gt; window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const goTo = useCallback((hash: string) =&gt; {
+    setMenuOpen(false);
+    if (window.location.hash === hash) setRoute(parseHash(hash));
+    window.location.hash = hash;
+  }, []);
+
+  const goHome = useCallback(() =&gt; goTo("#/"), [goTo]);
+  const goToMaterial = useCallback((id: string) =&gt; goTo(`#/material/${id}`), [goTo]);
+
+  const goSection = useCallback((section: string) =&gt; {
+    setMenuOpen(false);
+    if (parseHash(window.location.hash).view !== "home") {
+      pendingSection.current = section;
+      goTo("#/");
+    } else {
+      document.getElementById(section)?.scrollIntoView({ block: "start" });
+    }
+  }, [goTo]);
+
+  const disponibles = state.materials.filter((m) =&gt; m.estado === "disponible").length;
+
+  return (
+    &lt;div className="min-h-screen flex flex-col"&gt;
+      {/* Header con navegación */}
+      &lt;header className="sticky top-0 z-50 bg-sage-50/92 backdrop-blur-sm border-b-[3px] border-pine-900"&gt;
+        &lt;div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-8 h-14 sm:h-16 flex items-center gap-3 sm:gap-6"&gt;
+          &lt;button onClick={goHome} className="flex items-center gap-2 sm:gap-2.5 focus-ring group shrink-0"&gt;
+            &lt;LogoMark className="w-8 h-8 sm:w-9 sm:h-9" /&gt;
+            &lt;span className="font-display font-extrabold text-[19px] sm:text-[22px] text-pine-900"&gt;CIRCULA&lt;/span&gt;
+          &lt;/button&gt;
+          
+          {/* Navegación desktop */}
+          &lt;nav className="ml-auto hidden md:flex items-center gap-6"&gt;
+            &lt;button onClick={() =&gt; goSection("catalogo")} className="font-display font-bold text-pine-900"&gt;Catálogo&lt;/button&gt;
+            &lt;button onClick={() =&gt; goTo("#/donar")} className="font-display font-bold px-5 py-2.5 bg-marigold-400 text-pine-900 border-2 border-pine-900"&gt;
+              Donar materiales
+            &lt;/button&gt;
+          &lt;/nav&gt;
+          
+          {/* Menú móvil */}
+          &lt;nav className="ml-auto flex md:hidden items-center gap-2"&gt;
+            &lt;button onClick={() =&gt; goTo("#/donar")} className="font-display font-bold px-3 py-2 bg-marigold-400 border-2 border-pine-900"&gt;
+              Donar
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; setMenuOpen(!menuOpen)} className="p-2 border-2 border-pine-900"&gt;
+              ☰
+            &lt;/button&gt;
+          &lt;/nav&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      {/* Contenido principal */}
+      &lt;div className="flex-1"&gt;
+        {route.view === "home" &amp;&amp; &lt;Home goToMaterial={goToMaterial} goTo={goTo} /&gt;}
+        {route.view === "material" &amp;&amp; &lt;MaterialView id={route.id} goToMaterial={goToMaterial} goHome={goHome} /&gt;}
+        {route.view === "donar" &amp;&amp; &lt;DonateView goHome={goHome} /&gt;}
+        {route.view === "admin" &amp;&amp; &lt;AdminView tab={route.tab} goTo={goTo} /&gt;}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default function App() {
+  return (
+    &lt;StoreProvider&gt;
+      &lt;Shell /&gt;
+    &lt;/StoreProvider&gt;
+  );
+}</pre>
+                
+                <h3>📄 src/lib/data.ts (Modelo de Datos)</h3>
+                <div class="code-block-header">src/lib/data.ts (extracto)</div>
+                <pre class="code-block">// Tipos principales
+export type MaterialStatus = "borrador" | "disponible" | "reservado" | "entregado" | "inactivo";
+export type DonationStatus = "pendiente" | "contactada" | "aceptada" | "recepcion" | "recibida" | "rechazada" | "cancelada";
+export type RequestStatus = "recibida" | "coordinacion" | "reservada" | "entregada" | "cancelada" | "vencida";
+
+export interface Material {
+  id: string;
+  ref: string;
+  titulo: string;
+  autor: string;
+  tipo: TipoMaterial;
+  categoriaId: string;
+  descripcion: string;
+  estado: MaterialStatus;
+  zona: string;
+  fechaAlta: string;
+  historial: HitoMaterial[];
+  // ... más campos
+}
+
+// Máquinas de estado
+export const DONATION_FLOW: Record&lt;DonationStatus, DonationStatus[]&gt; = {
+  pendiente: ["contactada", "rechazada"],
+  contactada: ["aceptada", "rechazada", "cancelada"],
+  aceptada: ["recepcion", "cancelada"],
+  recepcion: ["recibida", "cancelada"],
+  recibida: [],
+  rechazada: [],
+  cancelada: [],
+};
+
+// Datos seed
+export const seedMaterials: Material[] = [
+  {
+    id: "m1",
+    ref: "M-0187",
+    titulo: "Cálculo de una variable",
+    autor: "James Stewart",
+    tipo: "libro",
+    categoriaId: "c1",
+    descripcion: "Novena edición en muy buen estado...",
+    estado: "disponible",
+    zona: "Cordón",
+    fechaAlta: dias(3),
+    historial: [{ fecha: dias(3), evento: "Catalogado y publicado" }],
+  },
+  // ... más materiales
+];</pre>
+                
+                <h3>📄 src/lib/api.ts (Capa de Servicio con Seguridad)</h3>
+                <div class="code-block-header">src/lib/api.ts (extracto)</div>
+                <pre class="code-block">// Rate limiting
+export function rateCheck(key: string, max: number, windowMs: number): { allowed: boolean; retryInSec: number } {
+  const now = Date.now();
+  const all = rlRead();
+  const hits = (all[key] ?? []).filter((t) =&gt; now - t &lt; windowMs);
+  if (hits.length &gt;= max) {
+    const retryInSec = Math.ceil((windowMs - (now - hits[0])) / 1000);
+    return { allowed: false, retryInSec };
+  }
+  all[key] = [...hits, now];
+  return { allowed: true, retryInSec: 0 };
+}
+
+// Validación server-side
+function validateRequest(store: StoreLike, r: RequestInput): Record&lt;string, string&gt; {
+  const e: Record&lt;string, string&gt; = {};
+  const mat = store.state.materials.find((m) =&gt; m.id === r.materialId);
+  if (!mat) e.materialId = "Este material ya no existe.";
+  else if (mat.estado !== "disponible") e.materialId = "Este material ya no está disponible.";
+  if (!r.consentimiento) e.consentimiento = "Necesitamos tu permiso.";
+  return e;
+}
+
+// DTO público sanitizado (sin datos de contacto)
+export function getPublicMaterials(db: DB): PublicMaterial[] {
+  return db.materials
+    .filter((m) =&gt; m.estado !== "borrador" &amp;&amp; m.estado !== "inactivo")
+    .map((m) =&gt; {
+      const { donationRef: _omit, ...rest } = m;
+      return rest;
+    });
+}
+
+// Autenticación con roles
+export function authenticate(store: StoreLike, email: string, pass: string): AuthResult {
+  const rl = rateCheck(`login:${email}`, 5, 10 * 60_000);
+  if (!rl.allowed) {
+    return { ok: false, error: "Demasiados intentos.", retryInSec: rl.retryInSec };
+  }
+  
+  const user = DEMO_USERS.find((u) =&gt; u.email === email &amp;&amp; u.pass === pass);
+  if (!user) {
+    store.dispatch({
+      type: "LOG_AUDIT",
+      entry: { entidad: "Sistema", entidadRef: "—", accion: "Intento fallido", usuario: email, detalle: "Credenciales inválidas." },
+    });
+    return { ok: false, error: "Credenciales inválidas." };
+  }
+  
+  store.dispatch({ type: "LOGIN", user });
+  return { ok: true, user };
+}</pre>
+                
+                <h3>📄 src/lib/store.tsx (Estado Global)</h3>
+                <div class="code-block-header">src/lib/store.tsx (extracto)</div>
+                <pre class="code-block">export interface DB {
+  materials: Material[];
+  donations: Donation[];
+  requests: Request[];
+  categories: Category[];
+  audit: AuditEntry[];
+  adminUser: AdminUser | null;
+  metrics: { searches: number; searchesWithResults: number };
+}
+
+// Reducer con autorización por rol
+function reducer(state: DB, action: Action): DB {
+  switch (action.type) {
+    case "ADD_CATEGORY": {
+      if (action.rol !== "admin") {
+        return {
+          ...state,
+          audit: [audit("Sistema", "—", "Acción denegada", action.usuario, `Intento sin rol admin.`), ...state.audit],
+        };
+      }
+      const cat: Category = { id: `c-${Date.now()}`, nombre: action.nombre, orden: 1, activo: true };
+      return {
+        ...state,
+        categories: [...state.categories, cat],
+        audit: [audit("Categoría", cat.nombre, "Creación", action.usuario, "Categoría añadida."), ...state.audit],
+      };
+    }
+    
+    case "REQUEST_STATUS": {
+      // Efectos sobre el material
+      let materials = state.materials;
+      if (action.status === "reservada") {
+        materials = materials.map((m) =&gt;
+          m.id === req.materialId ? { ...m, estado: "reservado" } : m
+        );
+      }
+      if (action.status === "entregada") {
+        materials = materials.map((m) =&gt;
+          m.id === req.materialId ? { ...m, estado: "entregado", fechaBaja: hoy() } : m
+        );
+      }
+      return { ...state, materials, requests: updatedRequests };
+    }
+  }
+}
+
+// Persistencia en localStorage
+useEffect(() =&gt; {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Modo privado o quota llena
+  }
+}, [state]);</pre>
+                
+                <h3>📄 src/views/Home.tsx (Página Principal)</h3>
+                <div class="code-block-header">src/views/Home.tsx (extracto)</div>
+                <pre class="code-block">export default function Home({ goToMaterial, goTo }: Props) {
+  const { state, dispatch } = useStore();
+  const api = useApi();
+  
+  // Filtros
+  const [q, setQ] = useState("");
+  const [cat, setCat] = useState("");
+  const [soloDisponibles, setSoloDisponibles] = useState(true);
+  
+  // Catálogo desde API pública (DTO sanitizado)
+  const visibles = useMemo(() =&gt; api.getMaterials(), [api]);
+  
+  // Filtrado y búsqueda
+  const results = useMemo(() =&gt; {
+    return visibles.filter((m) =&gt; {
+      if (soloDisponibles &amp;&amp; m.estado !== "disponible") return false;
+      if (cat &amp;&amp; m.categoriaId !== cat) return false;
+      if (q) {
+        const blob = norm([m.titulo, m.autor, m.descripcion].join(" "));
+        if (!norm(q).split(/\s+/).every((w) =&gt; blob.includes(w))) return false;
+      }
+      return true;
+    });
+  }, [visibles, q, cat, soloDisponibles]);
+  
+  // Métrica de búsquedas
+  useEffect(() =&gt; {
+    if (q.length &gt; 1) {
+      dispatch({ type: "REGISTER_SEARCH", withResults: results.length &gt; 0 });
+    }
+  }, [q, results.length]);
+  
+  return (
+    &lt;main&gt;
+      {/* Hero con búsqueda */}
+      &lt;section className="dot-grid"&gt;
+        &lt;h1&gt;Un libro quieto es un libro que espera circular.&lt;/h1&gt;
+        &lt;form role="search"&gt;
+          &lt;input value={q} onChange={(e) =&gt; setQ(e.target.value)} placeholder="Buscar..." /&gt;
+        &lt;/form&gt;
+      &lt;/section&gt;
+      
+      {/* Grid de materiales */}
+      &lt;section id="catalogo"&gt;
+        {results.map((m) =&gt; (
+          &lt;MaterialCard key={m.id} material={m} onOpen={goToMaterial} /&gt;
+        ))}
+      &lt;/section&gt;
+    &lt;/main&gt;
+  );
+}</pre>
+                
+                <h3>📄 src/views/Admin.tsx (Backoffice)</h3>
+                <div class="code-block-header">src/views/Admin.tsx (extracto)</div>
+                <pre class="code-block">export default function AdminView({ tab, goTo }: Props) {
+  const { state, dispatch } = useStore();
+  const api = useApi();
+  
+  // Login con rate limiting
+  const [loginError, setLoginError] = useState("");
+  const [loginBlocked, setLoginBlocked] = useState&lt;number | null&gt;(null);
+  
+  if (!state.adminUser) {
+    return (
+      &lt;main&gt;
+        &lt;h1&gt;Mesa interna&lt;/h1&gt;
+        &lt;form onSubmit={(e) =&gt; {
+          e.preventDefault();
+          const res = api.authenticate(email, pass);
+          if (res.ok) setLoginError("");
+          else {
+            setLoginError(res.error);
+            if (res.retryInSec) setLoginBlocked(res.retryInSec);
+          }
+        }}&gt;
+          &lt;input value={email} onChange={(e) =&gt; setEmail(e.target.value)} /&gt;
+          &lt;input type="password" value={pass} onChange={(e) =&gt; setPass(e.target.value)} /&gt;
+          &lt;button type="submit"&gt;Entrar&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/main&gt;
+    );
+  }
+  
+  // Tabs del backoffice
+  return (
+    &lt;main&gt;
+      &lt;nav&gt;
+        {TABS.map((t) =&gt; (
+          &lt;button key={t.id} onClick={() =&gt; goTo(`#/admin/${t.id}`)}&gt;
+            {t.label}
+          &lt;/button&gt;
+        ))}
+      &lt;/nav&gt;
+      
+      {tab === "panel" &amp;&amp; &lt;PanelTab /&gt;}
+      {tab === "donaciones" &amp;&amp; &lt;DonationsTab /&gt;}
+      {tab === "catalogo" &amp;&amp; &lt;CatalogTab /&gt;}
+      {tab === "solicitudes" &amp;&amp; &lt;RequestsTab /&gt;}
+      {tab === "categorias" &amp;&amp; &lt;CategoriesTab /&gt;}
+      {tab === "auditoria" &amp;&amp; &lt;AuditTab /&gt;}
+    &lt;/main&gt;
+  );
+}
+
+// Categorías con autorización
+function CategoriesTab() {
+  const { state, dispatch } = useStore();
+  const user = state.adminUser;
+  const esAdmin = user?.rol === "admin";
+  
+  return (
+    &lt;div&gt;
+      {!esAdmin &amp;&amp; (
+        &lt;div className="warning-box"&gt;
+          Modo lectura: tu rol es operador. Crear categorías requiere rol admin.
+        &lt;/div&gt;
+      )}
+      
+      &lt;form onSubmit={(e) =&gt; {
+        e.preventDefault();
+        dispatch({
+          type: "ADD_CATEGORY",
+          nombre: nombre.trim(),
+          usuario: user?.email ?? "—",
+          rol: user?.rol ?? "operador",
+        });
+      }}&gt;
+        &lt;input disabled={!esAdmin} /&gt;
+        &lt;button disabled={!esAdmin}&gt;Añadir&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+            </section>
+            
+            <section id="seguridad">
+                <h2>6. Seguridad y Privacidad</h2>
+                
+                <h3>🔒 Medidas Implementadas</h3>
+                
+                <h4>1. Protección de Datos</h4>
+                <ul>
+                    <li><strong>DTOs sanitizados:</strong> Los endpoints públicos nunca devuelven datos de contacto</li>
+                    <li><strong>Separación de datos:</strong> Información sensible solo en backoffice autenticado</li>
+                    <li><strong>Verificación por grep:</strong> Confirmado que ninguna vista pública expone contacto</li>
+                </ul>
+                
+                <h4>2. Validación Server-Side</h4>
+                <ul>
+                    <li>Todas las mutaciones pasan por validación en la capa de API</li>
+                    <li>Regex para emails y teléfonos</li>
+                    <li>Longitudes mínimas y máximas</li>
+                    <li>Validación de estados y reglas de negocio</li>
+                </ul>
+                
+                <h4>3. Rate Limiting</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Endpoint</th>
+                            <th>Límite</th>
+                            <th>Ventana</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>POST /api/donations</td>
+                            <td>3 requests</td>
+                            <td>10 minutos</td>
+                        </tr>
+                        <tr>
+                            <td>POST /api/requests</td>
+                            <td>4 requests</td>
+                            <td>10 minutos</td>
+                        </tr>
+                        <tr>
+                            <td>POST /api/auth</td>
+                            <td>5 intentos</td>
+                            <td>10 minutos por cuenta</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>4. Autenticación y Autorización</h4>
+                <ul>
+                    <li><strong>Roles:</strong> operador (operación diaria) y admin (gestión de categorías)</li>
+                    <li><strong>Sesiones auditadas:</strong> Login/logout registrados en auditoría</li>
+                    <li><strong>Intentos fallidos:</strong> Registrados sin revelar si falló email o contraseña</li>
+                    <li><strong>Autorización granular:</strong> Acciones denegadas se auditan</li>
+                </ul>
+                
+                <h4>5. Auditoría Completa</h4>
+                <ul>
+                    <li>Toda acción crítica deja rastro: quién, qué, cuándo</li>
+                    <li>Incluye: sesiones, intentos fallidos, acciones denegadas, cambios de estado</li>
+                    <li>Filtrable por entidad (Material, Donación, Solicitud, Categoría, Sistema)</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Nota sobre producción:</strong> Este prototipo usa localStorage para persistencia. En producción se debe migrar a un backend real con:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Base de datos PostgreSQL</li>
+                        <li>API REST con autenticación JWT</li>
+                        <li>HTTPS obligatorio</li>
+                        <li>Rate limiting en el servidor</li>
+                        <li>Validación server-side robusta</li>
+                        <li>Backup y recuperación</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="despliegue">
+                <h2>7. Guía de Despliegue</h2>
+                
+                <h3>🚀 Instalación Local</h3>
+                <div class="code-block">
+# Clonar el repositorio
+git clone &lt;repo-url&gt;
+cd circula
+
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
+
+# Abrir en navegador
+# http://localhost:5173
+                </div>
+                
+                <h3>📦 Build para Producción</h3>
+                <div class="code-block">
+# Generar build optimizado
+npm run build
+
+# Los archivos están en /dist
+# Desplegar en cualquier hosting estático:
+# - Vercel
+# - Netlify
+# - GitHub Pages
+# - Cloudflare Pages
+                </div>
+                
+                <h3>🔧 Scripts Disponibles</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Comando</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>npm run dev</code></td>
+                            <td>Inicia servidor de desarrollo con HMR</td>
+                        </tr>
+                        <tr>
+                            <td><code>npm run build</code></td>
+                            <td>Genera build optimizado para producción</td>
+                        </tr>
+                        <tr>
+                            <td><code>npm run preview</code></td>
+                            <td>Previsualiza el build de producción</td>
+                        </tr>
+                        <tr>
+                            <td><code>npm run typecheck</code></td>
+                            <td>Verifica tipos TypeScript sin compilar</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>🌐 Despliegue en Vercel</h3>
+                <div class="code-block">
+# Instalar Vercel CLI
+npm i -g vercel
+
+# Desplegar
+vercel
+
+# Seguir las instrucciones
+# - Framework: Vite
+# - Build command: npm run build
+# - Output directory: dist
+                </div>
+                
+                <h3>🌐 Despliegue en Netlify</h3>
+                <div class="code-block">
+# Conectar repositorio en Netlify
+# Configurar:
+# - Build command: npm run build
+# - Publish directory: dist
+# - Environment: Node 18+
+                </div>
+            </section>
+            
+            <section id="uso">
+                <h2>8. Uso del Prototipo</h2>
+                
+                <h3>🏠 Navegación Pública</h3>
+                <ol>
+                    <li><strong>Inicio:</strong> Página principal con buscador y catálogo</li>
+                    <li><strong>Búsqueda:</strong> Filtrar por texto, categoría, tipo, zona</li>
+                    <li><strong>Ficha:</strong> Ver detalles de un material</li>
+                    <li><strong>Solicitar:</strong> Formulario breve con datos de contacto</li>
+                    <li><strong>Donar:</strong> Formulario para proponer materiales</li>
+                </ol>
+                
+                <h3>👨‍💼 Backoffice</h3>
+                <div class="info-box">
+                    <strong>Credenciales de prueba:</strong>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><strong>Operador:</strong> operador@circula.uy / operador</li>
+                        <li><strong>Admin:</strong> admin@circula.uy / admin</li>
+                    </ul>
+                </div>
+                
+                <h4>Flujo de Trabajo del Operador</h4>
+                <ol>
+                    <li><strong>Panel:</strong> Vista general de métricas y actividad reciente</li>
+                    <li><strong>Donaciones:</strong> Revisar propuestas, cambiar estados, crear materiales</li>
+                    <li><strong>Catálogo:</strong> Editar materiales, cambiar estados (disponible/reservado/entregado)</li>
+                    <li><strong>Solicitudes:</strong> Coordinar retiros, marcar como entregadas</li>
+                    <li><strong>Auditoría:</strong> Revisar registro de acciones</li>
+                </ol>
+                
+                <h4>Flujo de Trabajo del Admin</h4>
+                <ol>
+                    <li>Todas las funciones del operador</li>
+                    <li><strong>Categorías:</strong> Crear y activar/desactivar categorías</li>
+                </ol>
+                
+                <h3>📊 Métricas del Sistema</h3>
+                <ul>
+                    <li><strong>Búsquedas:</strong> Total de búsquedas realizadas</li>
+                    <li><strong>% con resultado:</strong> Porcentaje de búsquedas exitosas</li>
+                    <li><strong>Materiales disponibles:</strong> Catálogo activo</li>
+                    <li><strong>Entregas:</strong> Materiales que ya circulan</li>
+                    <li><strong>Donaciones:</strong> Propuestas recibidas</li>
+                </ul>
+                
+                <div class="success-box">
+                    <strong>✅ Prototipo funcional completo:</strong> El sistema está listo para ser probado. Todos los flujos principales funcionan: búsqueda, solicitud, donación, backoffice, auditoría y métricas.
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p><strong>CIRCULA</strong> — Plataforma de circulación de materiales educativos</p>
+            <p>Prototipo MVP v1.0 · Desarrollado con React + TypeScript + Tailwind CSS</p>
+            <p style="margin-top: 1rem; opacity: 0.7;">Documento generado para exportación y presentación</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Smooth scroll para navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Resaltar sección activa en navegación
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.color = '#EFB93F';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
